@@ -1,8 +1,36 @@
-Resend to Mailcow Proxy 🚀📫
+# Resend to Mailcow Proxy 🚀📫
 
-Um proxy de alta disponibilidade em Node.js construído especificamente para contornar bloqueios da porta 25 (CGNAT, Provedores Residenciais, Starlink) em servidores de e-mail locais (self-hosted).
+Um proxy de alta disponibilidade em **Node.js** construído para contornar bloqueios da porta 25 (CGNAT, Provedores Residenciais, Starlink) em servidores de e-mail locais (*self-hosted*).
 
-Ele atua como uma ponte: recebe e-mails via Resend Webhooks, coloca as mensagens em uma fila persistente no disco (evitando perda de dados) e as injeta no seu servidor Mailcow local via SMTP.
+Ele atua como uma ponte: recebe e-mails via **Resend Webhooks**, coloca as mensagens em uma fila persistente no disco (evitando perda de dados) e as injeta no seu servidor **Mailcow** local via **SMTP**.
+
+## ⚠️ O Problema que este projeto resolve
+
+Se você hospeda seu próprio servidor Mailcow em casa ou na empresa, já deve ter esbarrado no **bloqueio da porta 25** pelo seu provedor de internet. Isso impede que seu servidor receba e-mails de fora.
+
+A solução padrão é usar o serviço de *Inbound* de terceiros (como a Resend). No entanto, a Resend envia esses e-mails recebidos via **Webhooks HTTP (JSON)**, enquanto o Mailcow só entende **SMTP**.
+
+> 💡 **Este proxy faz a tradução simultânea entre HTTP e SMTP com tolerância a falhas.**
+
+---
+
+## ✨ Principais Funcionalidades
+
+| Recurso | Descrição |
+|---|---|
+| **Zero Perda de Dados** | Se o seu Mailcow estiver offline, o proxy guarda o e-mail no disco rígido (`/data/queue`) e tenta novamente de forma automática (*backoff/retries*). |
+| **Tratamento de Anexos** | Baixa e processa anexos, mantendo imagens *inline* (como logos de assinatura) intactas. |
+| **Segurança Profissional** | Validação de assinaturas criptográficas nativa (**Svix**) para garantir que apenas a Resend possa injetar e-mails no seu servidor. |
+| **Auditoria Local** | Gera um log automático em **CSV** com status de sucesso/falha de todos os e-mails processados. |
+| **Extremamente Leve** | Não requer Redis, RabbitMQ ou bancos de dados externos. Usa o próprio disco rígido para gerenciamento de filas. |
+
+---
+
+## 🏗️ Arquitetura Recomendada
+
+```text
+Internet ──> Resend (Inbound) ──> Webhook ──> Cloudflare Tunnels ──> Servidor Local (Porta 2070) ──> Proxy Node.js ──> Mailcow (Porta 25 Interna)
+
 ⚠️ O Problema que este projeto resolve
 
 Se você hospeda seu próprio servidor Mailcow em casa ou na empresa, já deve ter esbarrado no bloqueio da porta 25 pelo seu provedor de internet. Isso impede que seu servidor receba e-mails de fora de forma direta.
