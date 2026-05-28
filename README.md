@@ -24,6 +24,6 @@ Internet -> Resend (Inbound) -> Webhook -> Cloudflare Tunnels -> Servidor Local 
 
 ### 1. Clonar e Instalar Dependências
 ```bash
-git clone [https://github.com/Fox13g/resend-to-mailcow-proxy.git](https://github.com/SEU_USUARIO/resend-to-mailcow-proxy.git)
+git clone https://github.com/Fox13g/resend-to-mailcow-proxy.git
 cd resend-to-mailcow-proxy
 npm install
