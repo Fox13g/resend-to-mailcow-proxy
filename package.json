@@ -1,19 +1,26 @@
 {
-  "name": "mailcow-inbound-proxy",
+  "name": "resend-to-mailcow-proxy",
   "version": "1.0.0",
+  "description": "A resilient Node.js proxy to bypass Port 25/CGNAT blocks using Resend Webhooks and Mailcow.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "resend",
+    "mailcow",
+    "proxy",
+    "webhook",
+    "smtp",
+    "cgnat"
+  ],
+  "author": "Lucas Gotardo",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "nodemailer": "^8.0.4",
-    "resend": "^6.10.0",
     "svix": "^1.89.0"
   }
 }
